@@ -1,6 +1,6 @@
 Pre-trained Grapheme-to-Phoneme (G2P) models
 ====
-This project is aimed to produce high quality phoneme transcriptions as the ground-truth for other non-grapheme-to-phoneme projects.
+This project is aiming to produce high quality phoneme transcriptions as the ground-truth for other non-grapheme-to-phoneme projects.
 
 ### Highlights
 
@@ -11,7 +11,8 @@ This project is aimed to produce high quality phoneme transcriptions as the grou
 
 ### Installation
 
-* Just clone the repository and the submodules
+* Install [Sequitur G2P](https://github.com/sequitur-g2p/sequitur-g2p)
+* Clone the repository and update the submodules
 ```sh
 git clone https://github.com/petronny/g2p
 cd g2p
