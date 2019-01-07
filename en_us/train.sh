@@ -1,5 +1,5 @@
 #!/bin/sh
-data=./beep.dict
+data=./cmudict/cmudict.dict
 max_order=9
 
 mkdir -p model
