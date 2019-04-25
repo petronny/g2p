@@ -21,11 +21,4 @@ git submodule update --init
 
 ### Usage
 
-```python
-from g2p import G2P
-
-g2p = G2P('/path/to/g2p/en_gb/beep.dict', '/path/to/g2p/en_gb/models/order-9')
-
-print(g2p['hello'])
-print(g2p['github'])
-```
+See [demo.py](https://github.com/petronny/g2p/blob/master/demo.py)

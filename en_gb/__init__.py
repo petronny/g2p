@@ -6,9 +6,11 @@ import SequiturTool
 from sequitur import Translator
 from functools import lru_cache
 logger = logging.getLogger()
+__dict_path__ = os.path.join(os.path.dirname(__file__), 'beep.dict')
+__model_path__ = os.path.join(os.path.dirname(__file__), 'models', 'order-9')
 
 class G2P(dict):
-    def __init__(self, dict_path, model_path):
+    def __init__(self, dict_path=__dict_path__, model_path=__model_path__):
         self.__dict__ = dict()
         dict_path = os.path.expanduser(dict_path)
         model_path = os.path.expanduser(model_path)
@@ -49,19 +51,6 @@ class G2P(dict):
             return result
 
 if __name__ == '__main__':
-    import sys
-
-    sequitur_options = Values()
-    sequitur_options.resume_from_checkpoint = False
-    sequitur_options.modelFile = 'order-9'
-    sequitur_options.shouldRampUp = False
-    sequitur_options.trainSample = False
-    sequitur_options.shouldTranspose = False
-    sequitur_options.newModelFile = False
-    sequitur_options.shouldSelfTest = False
-    model = SequiturTool.procureModel(sequitur_options, None)
-    if not model:
-        print('Can\'t load g2p model.')
-        sys.exit(1)
-    translator= Translator(model)
-    print(translator('hello'))
+    g2p = G2P()
+    print(g2p['hello'])
+    print(g2p['github'])

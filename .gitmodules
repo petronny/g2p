@@ -1,3 +1,6 @@
 [submodule "en_us/cmudict"]
 	path = en_us/cmudict
 	url = https://github.com/cmusphinx/cmudict
+[submodule "zh_cn/split_pinyin_sp"]
+	path = zh_cn/split_pinyin_sp
+	url = https://github.com/petronny/split_pinyin_sp
