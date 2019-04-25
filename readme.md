@@ -1,6 +1,6 @@
 Pre-trained Grapheme-to-Phoneme (G2P) models
 ====
-This project is aiming to produce high quality phoneme transcriptions as the ground-truth for other non-grapheme-to-phoneme projects.
+This project is aiming to produce high quality phoneme transcriptions as the ground-truth for other projects.
 
 ### Highlights
 
