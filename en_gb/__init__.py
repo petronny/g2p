@@ -9,9 +9,9 @@ logger = logging.getLogger()
 __dict_path__ = os.path.join(os.path.dirname(__file__), 'beep.dict')
 __model_path__ = os.path.join(os.path.dirname(__file__), 'models', 'order-9')
 
-class G2P(dict):
+class G2P:
     def __init__(self, dict_path=__dict_path__, model_path=__model_path__):
-        self.__dict__ = dict()
+        self._dict_ = dict()
         dict_path = os.path.expanduser(dict_path)
         model_path = os.path.expanduser(model_path)
         self.__dict_path__ = dict_path
@@ -35,22 +35,25 @@ class G2P(dict):
         a = [i.strip('\n') for i in a]
         for i in a:
             i = i.split(' ')
-            self.__dict__[i[0]] = i[1:]
+            self._dict_[i[0]] = i[1:]
 
     def __hash__(self):
         return hash(frozenset([self.__dict_path__, self.__model_path__]))
 
     @lru_cache(maxsize=None)
-    def __getitem__(self, key):
+    def __convert__(self, key):
+        return self.__model__(key)
+
+    def convert(self, key):
         key = key.lower()
         try:
-            return self.__dict__[key]
+            return self._dict_[key]
         except KeyError:
-            result = self.__model__(key)
+            result = self.__convert__(key)
             logger.debug('Converted "%s" to "%s" with g2p model ...' % (key, ' '.join(result)))
             return result
 
 if __name__ == '__main__':
     g2p = G2P()
-    print(g2p['hello'])
-    print(g2p['github'])
+    print(g2p.convert('hello'))
+    print(g2p.convert('github'))

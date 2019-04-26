@@ -12,6 +12,8 @@ __model_path__ = os.path.join(os.path.dirname(__file__), 'models', 'order-9')
 try:
     from .. en_gb import G2P as G2P_base
 except:
+    import sys
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     from en_gb import G2P as G2P_base
 
 class G2P(G2P_base):
@@ -21,5 +23,5 @@ class G2P(G2P_base):
 
 if __name__ == '__main__':
     g2p = G2P()
-    print(g2p['hello'])
-    print(g2p['github'])
+    print(g2p.convert('hello'))
+    print(g2p.convert('github'))
