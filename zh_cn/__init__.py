@@ -8,9 +8,9 @@ from functools import lru_cache
 __dict__ = os.path.join(os.path.dirname(__file__), 'dict.txt')
 
 try:
-    from split_pinyin_sp.split_pinyin import split_pinyin
+    from split_pinyin import split_pinyin
 except:
-    from .split_pinyin_sp.split_pinyin import split_pinyin
+    from .split_pinyin import split_pinyin
 
 class G2P:
     __leading_spaces_re__ = re.compile(r'^ ')
@@ -51,6 +51,8 @@ class G2P:
             result = [G2P.__leading_alphabets_re__.sub('\g<1>5', i) for i in result]
             result = [split_pinyin(i) if G2P.is_pinyin(i) else i for i in result]
             for i, j in enumerate(result[:-1]):
+                if not type(j) is tuple or not type(result[i + 1]) is tuple:
+                    continue
                 if j[2] == 3 and result[i + 1][2] == 3:
                     result[i] = j[:2] + (2 , ) + j[3:]
                 if key[i] == '一' and key[i + 1] != '一' and j[2] == 1 and result[i + 1][2] != 4:
@@ -80,8 +82,8 @@ class G2P:
                 if words[i] == '一' and j[0][2] == 1 and result[i + 1][0][2] == 4:
                     result[i][0] = j[0][:2] + (2 , ) + j[0][3:]
             result = [[G2P.__to_phoneme__(i) for i in j] for j in result]
-            if len(result) == 1:
-                result = result[0]
+            #if len(result) == 1:
+            #    result = result[0]
         else:
             result = G2P.__convert__(key)
             result = [G2P.__to_phoneme__(i) for i in result]
