@@ -5,6 +5,7 @@ import thulac
 import jieba
 from pypinyin import pinyin, Style
 from functools import lru_cache
+from copy import deepcopy as copy
 __dict__ = os.path.join(os.path.dirname(__file__), 'dict.txt')
 
 try:
@@ -61,7 +62,15 @@ class G2P:
                     result[i] = j[:2] + (2 , ) + j[3:]
             return result
 
-    def convert(self, key, tokenlization=True):
+    @staticmethod
+    def __join_list__(a, b):
+        result = copy(b[0])
+        for i in b[1:]:
+            result += a
+            result += i
+        return result
+
+    def convert(self, key, tokenlization=True, level=0):
         if tokenlization:
             words = self.__thulac__.cut(key, text=True).split(' ')
             words = [i.split('_')[0] for i in words]
@@ -82,11 +91,24 @@ class G2P:
                 if words[i] == '一' and j[0][2] == 1 and result[i + 1][0][2] == 4:
                     result[i][0] = j[0][:2] + (2 , ) + j[0][3:]
             result = [[G2P.__to_phoneme__(i) for i in j] for j in result]
-            #if len(result) == 1:
-            #    result = result[0]
+            if level < 2:
+                result = [G2P.__join_list__([' '], i) for i in result]
         else:
             result = G2P.__convert__(key)
             result = [G2P.__to_phoneme__(i) for i in result]
+        if level < 1:
+            tmp = copy(result)
+            result = []
+            for i, j in enumerate(tmp):
+                if i == len(tmp) - 1:
+                    result += list(j)
+                    continue
+                if type(j) == str or type(tmp[i + 1]) == str:
+                    result += list(j)
+                    result.append(' ')
+                else:
+                    result += list(j)
+                    result += [' ', '/', ' ']
         return result
 
 if __name__ == '__main__':
@@ -94,7 +116,8 @@ if __name__ == '__main__':
     g2p = G2P()
 
     print(g2p.convert('岂有此理'))
-    print(g2p.convert('手表厂有五种好产品'))
+    print(g2p.convert('手表厂有五种好产品。'))
+    print(g2p.convert('手表厂有五种好产品。', level=1))
     print(g2p.convert('请你给我打点洗脸水'))
     print(g2p.convert('好小伙', False))
     print(g2p.convert('并不对应'))
