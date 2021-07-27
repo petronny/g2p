@@ -14,9 +14,7 @@ This project is aiming to produce high quality phoneme transcriptions as the gro
 * Install [Sequitur G2P](https://github.com/sequitur-g2p/sequitur-g2p)
 * Clone the repository and update the submodules
 ```sh
-git clone https://github.com/petronny/g2p
-cd g2p
-git submodule update --init
+git clone --recursive https://github.com/petronny/g2p
 ```
 
 ### Usage
