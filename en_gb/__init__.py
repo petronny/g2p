@@ -7,15 +7,17 @@ from sequitur import Translator
 from functools import lru_cache
 logger = logging.getLogger()
 __dict_path__ = os.path.join(os.path.dirname(__file__), 'beep.dict')
+__symbol_path__ = os.path.join(os.path.dirname(__file__), 'beep.symbols')
 __model_path__ = os.path.join(os.path.dirname(__file__), 'models', 'order-9')
 
 class G2P:
-    def __init__(self, dict_path=__dict_path__, model_path=__model_path__):
+    def __init__(self, dict_path=__dict_path__, model_path=__model_path__, symbol_path=__symbol_path__):
         self._dict_ = dict()
         dict_path = os.path.expanduser(dict_path)
         model_path = os.path.expanduser(model_path)
         self.__dict_path__ = dict_path
         self.__model_path__ = model_path
+        self.__symbol_path__ = symbol_path
 
         sequitur_options = Values()
         sequitur_options.resume_from_checkpoint = False
@@ -36,6 +38,13 @@ class G2P:
         for i in a:
             i = i.split(' ')
             self._dict_[i[0]] = i[1:]
+
+        self.symbols = open(symbol_path).readlines()
+        self.symbols = [i.strip('\n') for i in self.symbols]
+        self.id2symbol = self.symbols
+        self.symbol2id = {}
+        for i, symbol in enumerate(self.symbols):
+            self.symbol2id[symbol] = i
 
     def __hash__(self):
         return hash(frozenset([self.__dict_path__, self.__model_path__]))
